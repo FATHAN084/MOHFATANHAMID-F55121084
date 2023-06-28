@@ -1,16 +1,1 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+import sys def tsp(graph, start): n = len(graph) # Buat himpunan subset semua node kecuali node awal all_nodes = set(range(n)) vertices = list(all_nodes - {start}) # Buat tabel DP untuk menyimpan subprobleme dp = {} for subset_size in range(1, n): dp[(frozenset([start]), subset_size)] = {} # Kasus dasar: node awal ke dirinya sendiri dengan subset kosong dp[(frozenset([start]), 0)] = 0 # Fungsi rekursif untuk menghitung jarak terpendek def tsp_helper(visited, last): if (visited, len(visited)) in dp: # Mengembalikan hasil yang sudah dihitung sebelumnya return dp[(visited, len(visited))] min_distance = sys.maxsize for next_node in vertices: if next_node not in visited: distance = graph[last][next_node] + tsp_helper(visited | {next_node}, next_node) min_distance = min(min_distance, distance) # Simpan hasil ke tabel DP dp[(visited, len(visited))] = min_distance return min_distance # Memulai rekursi dari node awal shortest_distance = tsp_helper(frozenset([start]), start) # Rekonstruksi jalur terpendek path = [start] last_node = start for _ in range(n - 1): min_distance = sys.maxsize next_node = None for node in vertices: distance = graph[last_node][node] + dp[(frozenset(path), len(path))] if distance < min_distance: min_distance = distance next_node = node path.append(next_node) vertices.remove(next_node) last_node = next_node path.append(start) return path, shortest_distance
